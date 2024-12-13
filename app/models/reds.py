@@ -2,6 +2,7 @@ from app import db
 
 
 class RedsModel(db.Model):
+    """开奖号码表"""
     __tablename__ = 'reds'
 
     id = db.Column(db.Integer, primary_key=True)

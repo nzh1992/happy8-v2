@@ -14,8 +14,10 @@ def create_app():
     register_blueprints(app)
 
     # init database
-    with app.app_context():
+    with (app.app_context()):
         from .models.reds import RedsModel
+        from .models.prize import (PrizeX10Model, PrizeX9Model, PrizeX8Model, PrizeX7Model, PrizeX6Model, \
+            PrizeX5Model, PrizeX4Model, PrizeX3Model, PrizeX2Model, PrizeX1Model)
         db.create_all()
 
     return app
