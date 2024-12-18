@@ -38,6 +38,8 @@ def init_extensions(app):
 def register_blueprints(app):
     from .apis.index import index_bp
     from .apis.reds import reds_bp
+    from .apis.prize import prize_bp
 
     app.register_blueprint(index_bp)
     app.register_blueprint(reds_bp)
+    app.register_blueprint(prize_bp)
