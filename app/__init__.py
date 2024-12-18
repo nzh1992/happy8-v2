@@ -1,7 +1,10 @@
+import os
+
 from flask import Flask
 
 from .data import HistoryData
 from .extensions import db
+from .utils.log import logger
 
 
 def create_app():
@@ -19,6 +22,9 @@ def create_app():
         from .models.prize import (PrizeX10Model, PrizeX9Model, PrizeX8Model, PrizeX7Model, PrizeX6Model, \
             PrizeX5Model, PrizeX4Model, PrizeX3Model, PrizeX2Model, PrizeX1Model)
         db.create_all()
+        logger.info("初始化数据库，成功。")
+
+    create_log_dir(app)
 
     return app
 
@@ -43,3 +49,12 @@ def register_blueprints(app):
     app.register_blueprint(index_bp)
     app.register_blueprint(reds_bp)
     app.register_blueprint(prize_bp)
+
+
+def create_log_dir(app):
+    # 创建日志目录
+    log_dir = os.path.join(os.path.dirname(app.root_path), 'logs')
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir, exist_ok=True)
+        app.log_dir = log_dir
+        logger.info("创建日志目录，成功。")
