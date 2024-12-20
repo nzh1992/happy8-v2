@@ -6,6 +6,7 @@ from app.utils.response import make_response
 from app.utils.transfer import wrap_to_model
 from app.models.reds import RedsModel
 from app.models.prize import PrizeX10Model
+from app.utils.log import logger
 
 
 prize_bp = Blueprint('prize', __name__, url_prefix='/prize')
@@ -37,16 +38,16 @@ def update_prize():
         item_code = period["code"]
         reds_obj = RedsModel.query.filter_by(code=item_code).first()
         if not reds_obj:
-            print(f"reds缺少第{item_code}期，跳过更新")
+            logger.warning(f"reds缺少第{item_code}期，跳过更新")
             continue
 
         reds_id = reds_obj.id
         model_objs = wrap_to_model(reds_id, period)
-
         db.session.add_all(model_objs)
+        logger.info(f"第{item_code}期奖金更新，成功")
 
     db.session.commit()
 
-    print(f"更新了{update_count}期")
+    logger.info(f"全部更新完成，共{update_count}期")
 
     return make_response(200, 'ok'), 200

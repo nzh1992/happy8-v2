@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from app.data import HistoryData
 from app.extensions import db
 from app.utils.response import make_response
+from app.utils.log import logger
 
 
 reds_bp = Blueprint('reds', __name__, url_prefix='/reds')
@@ -40,9 +41,11 @@ def update_reds():
         red_numbers = [item for item in row[1]]
         red_model = RedsModel(code, red_numbers)
         reds_model_list.append(red_model)
+        logger.info(f"第{code}期更新，成功")
 
     db.session.add_all(reds_model_list)
     db.session.commit()
+    logger.info(f"全部更新完成，共{update_count}期")
     return make_response(200, 'ok'), 200
 
 
