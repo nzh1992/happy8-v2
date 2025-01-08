@@ -4,6 +4,8 @@ from app.data import HistoryData
 from app.extensions import db
 from app.utils.response import make_response
 from app.utils.log import logger
+from app.models.reds import RedsModel
+from app.utils.transfer.red import RedsTransfer
 
 
 reds_bp = Blueprint('reds', __name__, url_prefix='/reds')
@@ -16,16 +18,22 @@ def update_reds():
 
     :return:
     """
-    data = request.get_json(force=True)
-
-    from app.models.reds import RedsModel
-
     # 数据库中的期数
     current_count = RedsModel.query.count()
 
+    # 官网期数
     hd = HistoryData()
-    # 总共的期数
     total_count = hd.get_history_count()
+
+    if current_count == 0:
+        # 初次更新，拉取全部数据
+
+        his_df = hd.get_reds_df(total_count, True)
+        reds_model_list = RedsTransfer(his_df).to_reds_model_list()
+
+    else:
+        # 追加更新，拉取后续数据
+        pass
 
     update_count = total_count - current_count
     if update_count <= 0:
@@ -49,3 +57,9 @@ def update_reds():
     return make_response(200, 'ok'), 200
 
 
+@reds_bp.route('/list', methods=['post'])
+def list_reds():
+    df = RedsModel.get_df('2024100', '2024110')
+    print(df)
+
+    return make_response(200, 'ok', df), 200

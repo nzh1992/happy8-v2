@@ -21,6 +21,8 @@ def create_app():
         from .models.reds import RedsModel
         from .models.prize import (PrizeX10Model, PrizeX9Model, PrizeX8Model, PrizeX7Model, PrizeX6Model, \
             PrizeX5Model, PrizeX4Model, PrizeX3Model, PrizeX2Model, PrizeX1Model)
+        from .models.statistic import ValueStatisticModel
+
         db.create_all()
         logger.info("初始化数据库，成功。")
 
@@ -45,10 +47,12 @@ def register_blueprints(app):
     from .apis.index import index_bp
     from .apis.reds import reds_bp
     from .apis.prize import prize_bp
+    from .apis.statistic import statistic_bp
 
     app.register_blueprint(index_bp)
     app.register_blueprint(reds_bp)
     app.register_blueprint(prize_bp)
+    app.register_blueprint(statistic_bp)
 
 
 def create_log_dir(app):

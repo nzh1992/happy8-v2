@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+</head>
+<body>
+<h1>快乐8</h1>
+<!-- sum, 和值图 -->
+<div id="sum" style="width: 1920px;height:400px;"></div>
+<!-- ave, 平均值图 -->
+<div id="ave" style="width: 1920px;height:400px;"></div>
+<!-- odd, 奇数偶数数量图 -->
+<div id="odd" style="width: 1920px;height:400px;"></div>
+
+
+<script type="text/javascript">
+    // 1. 和值，条形图
+    var sumChart = echarts.init(document.getElementById('sum'));
+    // 2. 平均值，条形图
+    var aveChart = echarts.init(document.getElementById('ave'));
+    // 3. 奇数偶数数量，条形图
+    var oddChart = echarts.init(document.getElementById('odd'));
+
+    var sumOption = {
+        title: {
+            text: '和值走势图'
+        },
+        xAxis: {
+            type: 'category',
+            // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: {{ resp_data.get("code_list") | safe }}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                //data: [150, 230, 224, 218, 135, 147, 260],
+                data: {{ resp_data.get("sum_list") | safe }},
+                type: 'line'
+            }
+        ]
+    };
+    sumChart.setOption(sumOption);
+
+    var aveOption = {
+        title: {
+            text: '平均值走势图'
+        },
+        xAxis: {
+            type: 'category',
+            data: {{ resp_data.get("code_list") | safe }}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: {{ resp_data.get("ave_list") | safe }},
+                type: 'line'
+            }
+        ]
+    };
+    aveChart.setOption(aveOption);
+
+    var oddOption = {
+        title: {
+            text: '奇偶数量走势图'
+        },
+        xAxis: {
+            type: 'category',
+            data: {{ resp_data.get("code_list") | safe }}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: {{ resp_data.get("odd_list") | safe }},
+                type: 'line'
+            },
+            {
+                data: {{ resp_data.get("even_list") | safe }},
+                type: 'line'
+            }
+        ]
+    }
+    oddChart.setOption(oddOption);
+
+
+</script>
+</body>
+</html>

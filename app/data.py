@@ -9,19 +9,40 @@ class HistoryData:
         self.base_url = "http://www.cwl.gov.cn"
         self.history_url = "http://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice"
 
-    def _make_history_params(self, page_size=100):
-        params = {
-            "name": "kl8",
-            "issueCount": "",
-            "issueStart": "",
-            "issueEnd": "",
-            "dayStart": "",
-            "dayEnd": "",
-            "pageNo": "1",
-            "pageSize": str(page_size),
-            "week": "",
-            "systemType": "PC"
-        }
+    def _make_history_params(self, page_size=100, code_start=None, code_end=None):
+        """
+        两种查询方式（方式2优先）：
+            1. 从当前往前page_size期，仅处理page_size参数
+            2. 从code_start到code_end期，仅处理code_start和code_end参数
+        """
+        if code_start and code_end:
+            # 方式2
+            params = {
+                "name": "kl8",
+                "issueCount": "",
+                "issueStart": code_start,
+                "issueEnd": code_end,
+                "dayStart": "",
+                "dayEnd": "",
+                "pageNo": "1",
+                "pageSize": "",
+                "week": "",
+                "systemType": "PC"
+            }
+        else:
+            # 方式1
+            params = {
+                "name": "kl8",
+                "issueCount": "",
+                "issueStart": "",
+                "issueEnd": "",
+                "dayStart": "",
+                "dayEnd": "",
+                "pageNo": "1",
+                "pageSize": str(page_size),
+                "week": "",
+                "systemType": "PC"
+            }
 
         return params
 
@@ -33,8 +54,8 @@ class HistoryData:
 
         return headers
 
-    def get_data(self, history_count=100):
-        query_params = self._make_history_params(history_count)
+    def get_data(self, history_count=None, code_start=None, code_end=None):
+        query_params = self._make_history_params(history_count, code_start, code_end)
         headers = self._make_history_headers()
 
         resp = requests.get(self.history_url, params=query_params, headers=headers, verify=True)
@@ -71,11 +92,12 @@ class HistoryData:
 
         return df
 
-    def get_reds_df(self, history_count=100):
+    def get_reds_df(self, history_count, sort_aesc=False):
         """
         统计结果以pd.DataFrame的形式返回，共21列，第1列是期数，其余20列为开奖号码。
 
         :param history_count: int. 获取多少期
+        :param sort_aesc: bool. 是否排序，若为True，按code升序排列，若为False，按降序排列
         :return:
         """
         content = self.get_data(history_count)
@@ -102,6 +124,10 @@ class HistoryData:
         # 创建DF
         df = pd.DataFrame(data=data_list, index=indexes, columns=columns)
 
+        # 是否排序
+        if sort_aesc:
+            df = df.sort_index()
+
         return df
 
     def get_history_count(self):
@@ -115,5 +141,6 @@ class HistoryData:
 
 if __name__ == '__main__':
     h = HistoryData()
-    total = h.get_history_count()
-    print(total)
+    total_period = h.get_history_count()
+    data = h.get_data(history_count=total_period)
+    print(data)
