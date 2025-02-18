@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Author: niziheng
+Created Date: 2025/2/2
+Last Modified: 2025/2/2
+Description: 
+"""
 def make_response(code, msg, data=None):
     """
     响应数据构造函数

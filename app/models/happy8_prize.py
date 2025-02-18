@@ -1,12 +1,15 @@
-from app import db
+from app.extentions import db
 
 
 class PrizeX10Model(db.Model):
+    """
+    选10中奖信息
+    """
     __tablename__ = 'prize_x10'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -40,13 +43,29 @@ class PrizeX10Model(db.Model):
     x10z0_num = db.Column(db.Integer)
     x10z0_total = db.Column(db.Float)
 
+    def __init__(self, public_info, prize_grades):
+        super().__init__()
+        self.public_info = public_info
+        self.prize_grades = prize_grades
+
+        # 提取
+        for idx, red in enumerate(reds):
+            attr_name = f"red{idx + 1}"
+            setattr(self, attr_name, red)
+
+    def __repr__(self):
+        return f"<Happy8Number id:{self.id} code:{self.code}>"
+
 
 class PrizeX9Model(db.Model):
+    """
+    选9中奖信息
+    """
     __tablename__ = 'prize_x9'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -83,11 +102,14 @@ class PrizeX9Model(db.Model):
 
 
 class PrizeX8Model(db.Model):
+    """
+    选8中奖信息
+    """
     __tablename__ = 'prize_x8'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -120,11 +142,14 @@ class PrizeX8Model(db.Model):
 
 
 class PrizeX7Model(db.Model):
+    """
+    选7中奖信息
+    """
     __tablename__ = 'prize_x7'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -152,11 +177,14 @@ class PrizeX7Model(db.Model):
 
 
 class PrizeX6Model(db.Model):
+    """
+    选6中奖信息
+    """
     __tablename__ = 'prize_x6'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -180,11 +208,14 @@ class PrizeX6Model(db.Model):
 
 
 class PrizeX5Model(db.Model):
+    """
+    选5中奖信息
+    """
     __tablename__ = 'prize_x5'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -204,11 +235,14 @@ class PrizeX5Model(db.Model):
 
 
 class PrizeX4Model(db.Model):
+    """
+    选4中奖信息
+    """
     __tablename__ = 'prize_x4'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -228,11 +262,14 @@ class PrizeX4Model(db.Model):
 
 
 class PrizeX3Model(db.Model):
+    """
+    选3中奖信息
+    """
     __tablename__ = 'prize_x3'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -248,11 +285,14 @@ class PrizeX3Model(db.Model):
 
 
 class PrizeX2Model(db.Model):
+    """
+    选2中奖信息
+    """
     __tablename__ = 'prize_x2'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)
@@ -264,11 +304,14 @@ class PrizeX2Model(db.Model):
 
 
 class PrizeX1Model(db.Model):
+    """
+    选1中奖信息
+    """
     __tablename__ = 'prize_x1'
 
     id = db.Column(db.Integer, primary_key=True)
-    reds_id = db.Column(db.Integer, db.ForeignKey('reds.id'))
-    reds_code = db.Column(db.String(20))
+    number_id = db.Column(db.Integer, db.ForeignKey('happy8_number.id'))
+    code = db.Column(db.String(20))
     date = db.Column(db.Date)
     pool_money = db.Column(db.Float)
     sales = db.Column(db.Float)

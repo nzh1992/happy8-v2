@@ -1,42 +1,43 @@
-import os
-
+# -*- coding: utf-8 -*-
+"""
+Author: niziheng
+Created Date: 2025/2/2
+Last Modified: 2025/2/2
+Description: 
+"""
 from flask import Flask
 
-from .data import HistoryData
-from .extensions import db
 from .utils.log import logger
+from .utils.file import FileManager
+from .extentions import db
 
 
 def create_app():
     app = Flask(__name__)
 
-    config_app(app)
+    # 加载配置
+    app.config.from_pyfile('config.py')
 
+    # 加载flask扩展
     init_extensions(app)
 
+    # 创建日志目录
+    FileManager().create_log_dir()
+
+    # 注册路由
     register_blueprints(app)
 
     # init database
     with (app.app_context()):
-        from .models.reds import RedsModel
-        from .models.prize import (PrizeX10Model, PrizeX9Model, PrizeX8Model, PrizeX7Model, PrizeX6Model, \
+        from .models.happy8_number import Happy8NumberModel
+        from .models.happy8_prize import (PrizeX10Model, PrizeX9Model, PrizeX8Model, PrizeX7Model, PrizeX6Model, \
             PrizeX5Model, PrizeX4Model, PrizeX3Model, PrizeX2Model, PrizeX1Model)
-        from .models.statistic import ValueStatisticModel
+        from .models.user import User
 
         db.create_all()
         logger.info("初始化数据库，成功。")
 
-    create_log_dir(app)
-
     return app
-
-
-def config_app(app):
-    # base setting
-    app.config['SECRET_KEY'] = 'secretwfejkasjdglk;jqwlkgnasjdflkad;ng'
-
-    # flask-sqlalchemy
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:123456@127.0.0.1:3306/happy8'
 
 
 def init_extensions(app):
@@ -44,21 +45,10 @@ def init_extensions(app):
 
 
 def register_blueprints(app):
-    from .apis.index import index_bp
-    from .apis.reds import reds_bp
-    from .apis.prize import prize_bp
-    from .apis.statistic import statistic_bp
+    from .apis.user import user_bp
+    from .apis.dashboard import dashboard_bp
+    from .apis.happy8 import happy8_bp
 
-    app.register_blueprint(index_bp)
-    app.register_blueprint(reds_bp)
-    app.register_blueprint(prize_bp)
-    app.register_blueprint(statistic_bp)
-
-
-def create_log_dir(app):
-    # 创建日志目录
-    log_dir = os.path.join(os.path.dirname(app.root_path), 'logs')
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir, exist_ok=True)
-        app.log_dir = log_dir
-        logger.info("创建日志目录，成功。")
+    app.register_blueprint(user_bp)
+    app.register_blueprint(dashboard_bp)
+    app.register_blueprint(happy8_bp)
