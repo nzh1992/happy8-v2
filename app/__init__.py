@@ -23,6 +23,8 @@ def create_app():
 
     # 创建日志目录
     FileManager().create_log_dir()
+    # 创建文件输出目录
+    FileManager().create_output_dir()
 
     # 注册路由
     register_blueprints(app)
@@ -33,6 +35,7 @@ def create_app():
         from .models.happy8_prize import (PrizeX10Model, PrizeX9Model, PrizeX8Model, PrizeX7Model, PrizeX6Model, \
             PrizeX5Model, PrizeX4Model, PrizeX3Model, PrizeX2Model, PrizeX1Model)
         from .models.user import User
+        from .models.analyze import ValueModel, NumberCountModel
 
         db.create_all()
         logger.info("初始化数据库，成功。")
@@ -48,7 +51,9 @@ def register_blueprints(app):
     from .apis.user import user_bp
     from .apis.dashboard import dashboard_bp
     from .apis.happy8 import happy8_bp
+    from .apis.output import output_bp
 
     app.register_blueprint(user_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(happy8_bp)
+    app.register_blueprint(output_bp)

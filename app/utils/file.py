@@ -25,3 +25,19 @@ class FileManager:
         if not os.path.exists(log_dir):
             os.makedirs(log_dir, exist_ok=True)
             logger.info("创建日志目录，成功。")
+
+    def create_output_dir(self):
+        """
+        创建输出文件存放目录，位于项目根目录（"<project>/output"）
+        """
+        output_dir = os.path.join(self.root_dir, 'output')
+
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir, exist_ok=True)
+            logger.info("创建文件输出目录，成功。")
+
+    def get_output_dir(self):
+        """
+        获取输出文件存放目录
+        """
+        return os.path.join(self.root_dir, 'output')

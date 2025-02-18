@@ -50,6 +50,15 @@ class Happy8NumberModel(db.Model):
     def __repr__(self):
         return f"<Happy8Number id:{self.id} code:{self.code}>"
 
+    def get_numbers(self):
+        """
+        获取开奖号码的list
+        """
+        return [self.red1, self.red2, self.red3, self.red4, self.red5,
+                self.red6, self.red7, self.red8, self.red9, self.red10,
+                self.red11, self.red12, self.red13, self.red14, self.red15,
+                self.red16, self.red17, self.red18, self.red19, self.red20]
+
     @staticmethod
     def init_data():
         """

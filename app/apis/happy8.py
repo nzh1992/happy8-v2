@@ -10,6 +10,7 @@ from flask import Blueprint
 from app.models.happy8_number import Happy8NumberModel
 from app.models.happy8_prize import (PrizeX10Model, PrizeX9Model, PrizeX8Model, PrizeX7Model, PrizeX6Model,
                                      PrizeX5Model, PrizeX4Model, PrizeX3Model, PrizeX2Model, PrizeX1Model)
+from app.models.analyze import ValueModel, NumberCountModel
 from app.data_source.data import HistoryData
 from app.utils.log import logger
 
@@ -34,6 +35,9 @@ def happy8_init():
     """
     # Happy8NumberModel.init_data()
 
-    Happy8NumberModel.init_prize_data()
+    # Happy8NumberModel.init_prize_data()
 
+    # ValueModel.init_value_analyze()
+
+    NumberCountModel.init_value_count()
     return "dashboard page."
