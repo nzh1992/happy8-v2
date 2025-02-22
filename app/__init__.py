@@ -30,12 +30,14 @@ def create_app():
     register_blueprints(app)
 
     # init database
-    with (app.app_context()):
+    with ((app.app_context())):
         from .models.happy8_number import Happy8NumberModel
         from .models.happy8_prize import (PrizeX10Model, PrizeX9Model, PrizeX8Model, PrizeX7Model, PrizeX6Model, \
             PrizeX5Model, PrizeX4Model, PrizeX3Model, PrizeX2Model, PrizeX1Model)
         from .models.user import User
-        from .models.analyze import ValueModel, NumberCountModel
+        from .models.analyze import ValueModel, NumberCountModel, CurrentMissingModel, HotNumberPeriod10Model, \
+            HotNumberPeriod20Model, HotNumberPeriod5Model
+        from .models.strategy import CatchMissingX2C5Model
 
         db.create_all()
         logger.info("初始化数据库，成功。")

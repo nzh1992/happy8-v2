@@ -128,3 +128,31 @@ class Happy8NumberModel(db.Model):
         else:
             db.session.commit()
             logger.info("保存成功")
+
+    @staticmethod
+    def get_last_model():
+        """
+        获取最近一期的model
+        """
+        last_model = Happy8NumberModel.query.order_by(Happy8NumberModel.id.desc()).first()
+        return last_model
+
+    @staticmethod
+    def get_before_model_by_id(id):
+        """
+        获取上一期model
+        """
+        before_model = Happy8NumberModel.query.filter_by(id=id-1).first()
+        return before_model
+
+    @staticmethod
+    def get_before_model_by_code(code):
+        """
+        获取上一期model
+        """
+        current_model = Happy8NumberModel.query.filter_by(code=code).first()
+        if current_model:
+            before_model = Happy8NumberModel.query.filter_by(id=current_model.id-1).first()
+            return before_model
+        else:
+            return None
